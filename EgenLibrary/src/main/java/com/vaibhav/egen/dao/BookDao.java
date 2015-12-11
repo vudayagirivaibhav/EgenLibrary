@@ -4,9 +4,7 @@ import java.util.List;
 
 import com.vaibhav.egen.model.Book;
 
- 
-
-public interface BookDao  {
+public interface BookDao {
 
 	public boolean addBook(Book book);
 
@@ -17,4 +15,9 @@ public interface BookDao  {
 	public List<Book> listBooks();
 
 	public boolean updateBook(Book book);
+
+	public String checkOut(Long book_id, Long user_id);
+
+	
+
 }

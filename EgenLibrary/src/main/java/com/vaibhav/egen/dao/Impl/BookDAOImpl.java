@@ -1,12 +1,14 @@
 package com.vaibhav.egen.dao.Impl;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,10 +16,12 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaibhav.egen.dao.BookDao;
+import com.vaibhav.egen.dao.UserDao;
 import com.vaibhav.egen.model.Book;
+import com.vaibhav.egen.model.User;
 
 public class BookDAOImpl implements BookDao {
-
+	 
 	@Autowired
 	SessionFactory sessionFactory;
 
@@ -30,9 +34,8 @@ public class BookDAOImpl implements BookDao {
 		// TODO Auto-generated method stub
 		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
-	     
 		session.save(book);
-		//tx.commit();
+		tx.commit();
 		session.close();
 		return false;
 	}
@@ -52,12 +55,10 @@ public class BookDAOImpl implements BookDao {
 	public Book getBookByName(String name) {
 		System.out.println("name" + name);
 		session = sessionFactory.openSession();
-		// TODO Auto-generated method stub
-
 		Criteria criteria = session.createCriteria(Book.class);
 		criteria.add(Restrictions.eq("name", name));
 		Book resBook = (Book) criteria.uniqueResult();
-		System.out.println(resBook.getName() + resBook.getBookid()+ resBook.getAuthor() + resBook.getUser());
+		System.out.println(resBook.getName() + resBook.getBookid() + resBook.getAuthor() + resBook.getUser());
 		session.close();
 		return resBook;
 	}
@@ -90,4 +91,45 @@ public class BookDAOImpl implements BookDao {
 		session.close();
 		return false;
 	}
+
+	@Override
+	public String checkOut(Long book_id, Long user_id) {
+				
+		String msg = null;
+	    session = sessionFactory.openSession();
+	    Book book = (Book) session.load(Book.class, new Long(book_id));
+	    User user =(User) session.load(User.class, new Long(user_id));
+		tx = session.beginTransaction();
+	//	System.out.println(user.toString());
+
+		String sql = "select * FROM book WHERE user_id = :user_id and book_id =:book_id";
+		SQLQuery query = session.createSQLQuery(sql);
+			
+		query.setParameter("user_id",user_id);
+		query.setParameter("book_id",book_id );
+		
+		List<User> results = query.list();
+		System.out.println("From DB" + results.toString() + "size :"+results.size());
+			if (results.isEmpty()) {
+			book.setUser(user);
+			tx.commit();
+			session.close();
+			msg =" Sucessfully checked out";
+
+		} else {
+		           
+			System.out.println("Already in the DB");
+			msg ="Already checked out";
+		}
+			return msg;
+
+	
+		
+	
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
 }

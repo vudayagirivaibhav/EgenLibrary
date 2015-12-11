@@ -42,7 +42,6 @@ public class UserController {
 		User user = null;
 		try {
 			user = userServices.getUserById(id);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

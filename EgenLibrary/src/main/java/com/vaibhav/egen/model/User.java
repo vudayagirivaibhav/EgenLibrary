@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import com.sun.istack.internal.NotNull;
+
 @Entity
 @Table(name = "user")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -31,22 +33,26 @@ public class User implements Serializable {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-
+	@NotNull
 	@Column(name = "first_name")
 	private String firstName;
 
 	@Column(name = "middle_name")
 	private String middlename;
-
+    
+	@NotNull
 	@Column(name = "last_name")
 	private String lastname;
 
+	@NotNull
 	@Column(name = "age")
 	private int age;
 
+	@NotNull
 	@Column(name = "gender")
 	private String gender;
 
+	@NotNull
 	@Column(name = "phone")
 	private BigInteger phone;
 

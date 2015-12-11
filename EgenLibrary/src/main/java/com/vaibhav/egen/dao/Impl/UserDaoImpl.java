@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.vaibhav.egen.dao.UserDao;
+import com.vaibhav.egen.model.Status;
 import com.vaibhav.egen.model.User;
 
 @Repository("userDao")
@@ -24,7 +25,6 @@ public class UserDaoImpl implements UserDao {
 	Session session = null;
 	Transaction tx = null;
 
-	@SuppressWarnings("unused")
 	@Override
 	public boolean addUser(User user) throws Exception {
 		session = sessionFactory.openSession();
@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
 			session.close();
 
 		} else {
-
+		           
 			System.out.println("Already in the DB");
 		}
 

@@ -16,4 +16,5 @@ public interface BookServices {
 
 	public boolean updateBook(Book book) throws Exception;
 
+	public String checkOut(Long book_id,Long user_id) throws Exception;
 }
